@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { body, validationResult } from "express-validator";
+import { handleInputErrors } from "./modules/middleware";
 
 const router = Router();
 
@@ -10,15 +11,13 @@ router.get("/product", (req, res) => {
   res.json({ message: "Hello" });
 });
 router.get("/product/:id", () => {});
-router.put("/product/:id", body("name"), (req, res) => {
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    res.status(400);
-    res.json({ errors: errors.array() });
-  }
-});
-router.post("/product", () => {});
+router.put(
+  "/product/:id",
+  body("name").isString(),
+  handleInputErrors,
+  (req, res) => {}
+);
+router.post("/product", (req, res) => {});
 router.delete("/product/:id", () => {});
 
 /**
@@ -26,7 +25,15 @@ router.delete("/product/:id", () => {});
  * */
 router.get("/update", () => {});
 router.get("/update/:id", () => {});
-router.put("/update/:id", () => {});
+router.put("/update/:id", body("title").isString(), (req, res) => {
+  const errors = validationResult(req);
+  console.log(errors);
+
+  if (!errors.isEmpty()) {
+    res.status(400);
+    res.json({ errors: errors.array() });
+  }
+});
 router.post("/update", () => {});
 router.delete("/update/:id", () => {});
 
