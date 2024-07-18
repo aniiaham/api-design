@@ -8,6 +8,6 @@ export const handleInputErrors = (req, res) => {
     res.status(400);
     res.json({ errors: errors.array() });
   } else {
-    next();
+    res.next();
   }
 };
