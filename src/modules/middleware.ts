@@ -8,6 +8,9 @@ export const handleInputErrors = (req, res) => {
     res.status(400);
     res.json({ errors: errors.array() });
   } else {
-    res.next();
+    next();
   }
 };
+function next() {
+  throw new Error("Function not implemented.");
+}
